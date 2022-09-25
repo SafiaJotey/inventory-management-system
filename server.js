@@ -65,10 +65,9 @@ const productSchema = mongoose.Schema({
   },
   categories: [
     {
-      name: String,
-      required: true,
+      name: { String, required: true },
+      _id: mongoose.Schema.Types.ObjectId,
     },
-    (_id: mongoose.Schema.Types.ObjectId),
   ],
 
   timestamps: true,

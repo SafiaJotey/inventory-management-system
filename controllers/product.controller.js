@@ -36,7 +36,7 @@ exports.getAllProducts = async (req, res, next) => {
     });
   } catch (error) {
     res.status(400).send({
-      sucess: false,
+      success: false,
       message: "Couldn't get data",
       error: error.message,
     });
@@ -60,6 +60,27 @@ exports.createAProduct = async (req, res, next) => {
     res.status(400).send({
       success: false,
       message: "data didn't insert",
+      error: error.message,
+    });
+  }
+};
+exports.updateAProduct = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const upadatedProduct = await productServices.updateProductService(
+      id,
+      req.body
+    );
+    res.status(200).send({
+      success: true,
+      message: `product with id: ${id} successfully updated`,
+      data: upadatedProduct,
+    });
+  } catch (error) {
+    res.status(400).send({
+      success: false,
+      message: "couldn't update the product",
       error: error.message,
     });
   }

@@ -1,3 +1,4 @@
+const { updateMany } = require('../models/Product');
 const productServices = require('../services/product.services');
 
 exports.getAllProducts = async (req, res, next) => {
@@ -81,6 +82,47 @@ exports.updateAProduct = async (req, res, next) => {
     res.status(400).send({
       success: false,
       message: "couldn't update the product",
+      error: error.message,
+    });
+  }
+};
+
+//Bulk Update Products With Same Values
+exports.bulkUpdateProductWithSameValue = async (req, res, next) => {
+  const { ids, data } = req.body;
+  try {
+    const result = await productServices.updateBulkProductsWithSameVaues(
+      ids,
+      data
+    );
+    res.status(200).send({
+      succes: true,
+      message: 'Bulk update is successfull',
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).send({
+      succes: false,
+      message: 'Bulk update is failed',
+      error: error.message,
+    });
+  }
+};
+
+exports.bulkUpdateProductWithDiffValue = async (req, res, next) => {
+  try {
+    const result = await productServices.updateBulkProductsWithDiffVaues(
+      req.body
+    );
+    res.status(200).send({
+      success: true,
+      message: 'Bulk update with different data is successfull',
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).send({
+      success: false,
+      message: 'Bulk update with different data is failed',
       error: error.message,
     });
   }

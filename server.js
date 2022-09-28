@@ -93,7 +93,7 @@ productSchema.post('save', function (doc, next) {
 });
 
 //instance creation
-productSchema.method.logger = function () {
+productSchema.methods.logger = function () {
   console.log(`Data saved for${this.name}`);
 };
 
@@ -103,6 +103,51 @@ const Product = mongoose.model('Product', productSchema);
 //Routes
 app.get('/', (req, res) => {
   res.send('Route is working!');
+});
+
+//get from DB
+
+app.get('/api/v1/product', async (req, res, next) => {
+  try {
+    //find a product by id
+    const products = await Product.findById('63305a5d2bcd2a78c7b14f0f');
+    // const products = await Product.findById(undefined);
+    //some queries
+    // const products = await Product.find({ _id: '63305a5d2bcd2a78c7b14f0f' });
+
+    //or operator
+    // const products = await Product.find({
+    //   $or: [{ _id: '63305a5d2bcd2a78c7b14f0' }, { name: 'Mango' }],
+    // });
+
+    //not equal
+    // const products = await Product.find({
+    //   status: { $ne: 'out-of-stock' },
+    // });
+
+    //greater then
+    // const products = await Product.find({
+    //   quantity: { $gt: 100 },
+    // });
+
+    //projection
+    // const products = await Product.find({}, 'name -_id');
+    // const products = await Product.find({}).select({ quantity: 1, _id: 0 });
+
+    //sort limit
+    // const products = await Product.find({}).limit(5).sort({ quantity: -1 });
+
+    res.status(200).send({
+      success: true,
+      data: products,
+    });
+  } catch (error) {
+    res.status(400).send({
+      sucess: false,
+      message: "Couldn't get data",
+      error: error.message,
+    });
+  }
 });
 //post to DB
 app.post('/api/v1/product', async (req, res, next) => {

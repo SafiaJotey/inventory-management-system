@@ -127,3 +127,38 @@ exports.bulkUpdateProductWithDiffValue = async (req, res, next) => {
     });
   }
 };
+
+exports.deleteWithID = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    result = await productServices.deleteProductService(id);
+    res.status(200).send({
+      success: true,
+      message: 'Successfully deleted the product',
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).send({
+      success: false,
+      message: "Couldn't delete the data",
+      error: error.message,
+    });
+  }
+};
+
+exports.bulkDeleteProducts = async (req, res, next) => {
+  try {
+    const result = await productServices.deleteBulkProductService(req.body.ids);
+    res.status(200).send({
+      success: true,
+      message: 'Successfully deleted the bulk products',
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).send({
+      success: false,
+      message: "Couldn't delete the data",
+      error: error.message,
+    });
+  }
+};

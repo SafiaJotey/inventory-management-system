@@ -3,9 +3,8 @@ const productServices = require('../services/product.services');
 
 exports.getAllProducts = async (req, res, next) => {
   try {
-    console.log('i am client', req.query);
     //filters for finding with
-    const filters = { ...req.query };
+    let filters = { ...req.query };
     const queries = {};
     const excludeFields = ['sort', 'limit', 'page'];
     excludeFields.forEach((field) => delete filters[field]);
@@ -15,22 +14,32 @@ exports.getAllProducts = async (req, res, next) => {
       queries.sortBy = sortBy;
       console.log(queries);
     }
+
+    //limit
     if (req.query.limit) {
       queries.limit = parseInt(req.query.limit);
       console.log(queries);
     }
+    //page
     if (req.query.page) {
       queries.page = req.query.page * 1;
       console.log(queries);
     }
-
+    //projection select
     if (req.query.fields) {
       const fields = req.query.fields.split(',').join(' ');
       queries.fields = fields;
       console.log(queries);
     }
-    console.log(queries);
-    //find a product by id
+    //operators
+    let filterString = JSON.stringify(filters);
+    filterString = filterString.replace(
+      /\b(gt|lt|gte|lte|eq|neq)\b/g,
+      (match) => `$${match}`
+    );
+    filters = JSON.parse(filterString);
+
+    //get products
     const products = await productServices.getProductServices(filters, queries);
     // const products = await Product.findById(undefined);
     //some queries

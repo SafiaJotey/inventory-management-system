@@ -3,8 +3,35 @@ const productServices = require('../services/product.services');
 
 exports.getAllProducts = async (req, res, next) => {
   try {
+    console.log('i am client', req.query);
+    //filters for finding with
+    const filters = { ...req.query };
+    const queries = {};
+    const excludeFields = ['sort', 'limit', 'page'];
+    excludeFields.forEach((field) => delete filters[field]);
+    //sort,
+    if (req.query.sort) {
+      const sortBy = req.query.sort.split(',').join(' ');
+      queries.sortBy = sortBy;
+      console.log(queries);
+    }
+    if (req.query.limit) {
+      queries.limit = parseInt(req.query.limit);
+      console.log(queries);
+    }
+    if (req.query.page) {
+      queries.page = req.query.page * 1;
+      console.log(queries);
+    }
+
+    if (req.query.fields) {
+      const fields = req.query.fields.split(',').join(' ');
+      queries.fields = fields;
+      console.log(queries);
+    }
+    console.log(queries);
     //find a product by id
-    const products = await productServices.getProductServices(req.query.limit);
+    const products = await productServices.getProductServices(filters, queries);
     // const products = await Product.findById(undefined);
     //some queries
     // const products = await Product.find({ _id: '63305a5d2bcd2a78c7b14f0f' });

@@ -15,15 +15,13 @@ exports.getAllProducts = async (req, res, next) => {
       console.log(queries);
     }
 
-    //limit
-    if (req.query.limit) {
-      queries.limit = parseInt(req.query.limit);
-      console.log(queries);
-    }
-    //page
+    //pagination
+
     if (req.query.page) {
-      queries.page = req.query.page * 1;
-      console.log(queries);
+      const { page = 1, limit = 5 } = req.query;
+      const skip = (page - 1) * parseInt(limit);
+      queries.skip = skip;
+      queries.limit = parseInt(limit);
     }
     //projection select
     if (req.query.fields) {

@@ -7,7 +7,7 @@ module.exports.getProductServices = async (filter, query) => {
     .select(query.fields)
     .sort(query.sortBy);
 
-  //   console.log(product);
+  console.log(product);
   const total = await Product.countDocuments(filter);
   const pageCount = Math.ceil(total / query.limit);
   return { total, pageCount, product };

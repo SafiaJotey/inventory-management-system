@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+const { ObjectId } = mongoose.Schema.Types;
+const { validator } = require('validator');
+
 const productSchema = mongoose.Schema(
   {
     name: {
@@ -8,6 +11,7 @@ const productSchema = mongoose.Schema(
       unique: [true, 'Name must be unique'],
       minLength: [3, 'Name must be 3 charecters'],
       maxLength: [20, 'Name is too large'],
+      lowercase: true,
     },
     description: {
       type: String,
@@ -22,8 +26,8 @@ const productSchema = mongoose.Schema(
       type: String,
       required: [true, 'Please provide an unit'],
       enum: {
-        values: ['kg', 'ltr', 'pcs'],
-        message: 'Unit cant be {VALUE}, must be kg/ltr/pcs',
+        values: ['kg', 'ltr', 'pcs', 'bag'],
+        message: 'Unit cant be {VALUE}, must be kg/ltr/pcs/bag',
       },
     },
     quantity: {
@@ -54,15 +58,48 @@ const productSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Suppliers',
     },
-    categories: [
-      {
-        name: {
-          type: String,
-          required: [true, 'Please provide a category name'],
+    // categories: [
+    //   {
+    //     name: {
+    //       type: String,
+    //       required: [true, 'Please provide a category name'],
+    //     },
+    //     _id: mongoose.Schema.Types.ObjectId,
+    //   },
+    // ],
+    imageUrtl: {
+      type: String,
+      validate: {
+        validator: (value) => {
+          if (!Array.isArray(value)) {
+            return false;
+          }
+          let isValid = true;
+          value.forEach((url) => {
+            if (!validator.isURL(url)) {
+              isValid = false;
+            }
+          });
+          return isValid;
         },
-        _id: mongoose.Schema.Types.ObjectId,
+        message: 'Please provide valid image urls',
       },
-    ],
+    },
+    brand: {
+      name: {
+        type: String,
+        required: true,
+      },
+      id: {
+        type: ObjectId,
+        ref: 'Brand',
+        required: true,
+      },
+    },
+    category: {
+      type: String,
+      required: [true, 'please provide a category'],
+    },
   },
 
   { timestamps: true }

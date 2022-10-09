@@ -17,11 +17,7 @@ const productSchema = mongoose.Schema(
       type: String,
       required: [true, 'Please provide a description'],
     },
-    price: {
-      type: Number,
-      required: [true, 'Please provide a price'],
-      min: [0, "price can't be negative"],
-    },
+
     unit: {
       type: String,
       required: [true, 'Please provide an unit'],
@@ -30,21 +26,7 @@ const productSchema = mongoose.Schema(
         message: 'Unit cant be {VALUE}, must be kg/ltr/pcs/bag',
       },
     },
-    quantity: {
-      type: Number,
-      required: [true, 'Please provide quantity'],
-      validate: {
-        validator: (value) => {
-          const isInteger = Number.isInteger(value);
-          if (isInteger) {
-            return true;
-          } else {
-            return false;
-          }
-        },
-      },
-      message: 'Quantity must be an integer ',
-    },
+
     status: {
       type: String,
       enum: {

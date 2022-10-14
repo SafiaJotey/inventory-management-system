@@ -8,7 +8,7 @@ const productSchema = mongoose.Schema(
       type: String,
       required: [true, 'Please provide a name'],
       trim: true,
-      unique: [true, 'Name must be unique'],
+
       minLength: [3, 'Name must be 3 charecters'],
       maxLength: [20, 'Name is too large'],
       lowercase: true,
@@ -27,14 +27,6 @@ const productSchema = mongoose.Schema(
       },
     },
 
-    status: {
-      type: String,
-      enum: {
-        values: ['out-of-stock', 'in-stock', 'discontinued'],
-        message:
-          "Values can't be {VALUE} , it must be out-of-stock/in-stock/discontinued",
-      },
-    },
     //refer other model
     supplier: {
       type: mongoose.Schema.Types.ObjectId,

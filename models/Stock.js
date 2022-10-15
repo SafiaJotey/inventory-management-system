@@ -28,23 +28,9 @@ const StockSchema = mongoose.Schema(
         message: "unit value can't be {VALUE}, must be kg/ltr/pcs/bag",
       },
     },
-    imageUrtl: {
+    imageUrl: {
       type: String,
-      validate: {
-        validator: (value) => {
-          if (!Array.isArray(value)) {
-            return false;
-          }
-          let isValid = true;
-          value.forEach((url) => {
-            if (!validator.isURL(url)) {
-              isValid = false;
-            }
-          });
-          return isValid;
-        },
-        message: 'Please provide valid image urls',
-      },
+      validate: [validator.isURL, 'please provide a valid url(s)'],
     },
     price: {
       type: Number,

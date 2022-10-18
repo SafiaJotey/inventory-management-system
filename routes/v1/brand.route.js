@@ -5,5 +5,7 @@ router
   .route('/')
   .post(brandController.createBrand)
   .get(brandController.getBrands);
-// .get(brandController.getAllBrands);
+
+router.route('/:id').get(brandController.getBrandDetails);
+
 module.exports = router;

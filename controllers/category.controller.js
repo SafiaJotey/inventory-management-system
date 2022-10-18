@@ -32,3 +32,21 @@ module.exports.getCategory = async (req, res, next) => {
     });
   }
 };
+module.exports.getCategoryDetails = async (req, res, next) => {
+  try {
+    const categoryDetails = await categoryservices.getcategorydeatails(
+      req.params.id
+    );
+    res.status(200).send({
+      success: true,
+      message: 'successfully get the Category Details ',
+      data: categoryDetails,
+    });
+  } catch (error) {
+    res.status(400).send({
+      success: false,
+      message: "couldn't get the Category Details",
+      error: error.message,
+    });
+  }
+};

@@ -33,3 +33,19 @@ module.exports.getBrands = async (req, res, next) => {
     });
   }
 };
+module.exports.getBrandDetails = async (req, res, next) => {
+  try {
+    const brandDetails = await brandService.getBranddeatails(req.params.id);
+    res.status(200).send({
+      success: true,
+      message: 'successfully get the brandDetails ',
+      data: brandDetails,
+    });
+  } catch (error) {
+    res.status(400).send({
+      success: false,
+      message: "couldn't get the barand Details",
+      error: error.message,
+    });
+  }
+};

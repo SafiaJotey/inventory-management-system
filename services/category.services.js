@@ -7,3 +7,7 @@ module.exports.getAllCategories = async () => {
   const result = await Category.find({});
   return result;
 };
+module.exports.getcategorydeatails = async (id) => {
+  const result = await Category.find({ _id: id });
+  return result;
+};

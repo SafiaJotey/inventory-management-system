@@ -36,7 +36,7 @@ exports.getAllProducts = async (req, res, next) => {
       (match) => `$${match}`
     );
     filters = JSON.parse(filterString);
-
+    console.log(filters, queries);
     //get products
     const products = await productServices.getProductServices(filters, queries);
     // const products = await Product.findById(undefined);
@@ -85,7 +85,7 @@ exports.createAProduct = async (req, res, next) => {
     //create => do something => save
 
     const result = await productServices.createProductService(req.body);
-    result.logger();
+    // result.logger();
     res.status(200).send({
       success: true,
       message: 'data inserted successfully',

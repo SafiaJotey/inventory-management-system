@@ -1,6 +1,7 @@
 const Product = require('../models/Product');
 module.exports.getProductServices = async (filter, query) => {
   //   const product = await Product.find({}).limit(+limit);
+  console.log(Product);
   const product = await Product.find(filter)
     .skip(query.skip)
     .limit(query.limit)

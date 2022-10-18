@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Schema.Types;
-const { validator } = require('validator');
+const validator = require('validator');
 
 const productSchema = mongoose.Schema(
   {
@@ -10,7 +10,7 @@ const productSchema = mongoose.Schema(
       trim: true,
 
       minLength: [3, 'Name must be 3 charecters'],
-      maxLength: [20, 'Name is too large'],
+      maxLength: [50, 'Name is too large'],
       lowercase: true,
     },
     description: {
@@ -29,7 +29,7 @@ const productSchema = mongoose.Schema(
 
     //refer other model
     supplier: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: ObjectId,
       ref: 'Suppliers',
     },
     // categories: [
@@ -41,24 +41,13 @@ const productSchema = mongoose.Schema(
     //     _id: mongoose.Schema.Types.ObjectId,
     //   },
     // ],
-    imageUrtl: {
-      type: String,
-      validate: {
-        validator: (value) => {
-          if (!Array.isArray(value)) {
-            return false;
-          }
-          let isValid = true;
-          value.forEach((url) => {
-            if (!validator.isURL(url)) {
-              isValid = false;
-            }
-          });
-          return isValid;
-        },
-        message: 'Please provide valid image urls',
+    imageURLs: [
+      {
+        type: String,
+        required: true,
+        validate: [validator.isURL, 'please provide valid url(s)'],
       },
-    },
+    ],
     brand: {
       name: {
         type: String,

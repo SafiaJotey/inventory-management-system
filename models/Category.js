@@ -10,10 +10,27 @@ const categorySchema = mongoose.Schema(
       lowercase: true,
     },
     description: String,
-    imageUrl: {
-      type: String,
-      validate: [validator.isURL, 'please provide a valid url'],
-    },
+    imageURLs: [
+      {
+        type: String,
+        required: true,
+        validate: {
+          validator: (value) => {
+            if (!Array.isArray(value)) {
+              return false;
+            }
+            let isValid = true;
+            value.forEach((url) => {
+              if (!validator.isURL(url)) {
+                isValid = false;
+              }
+            });
+            return isValid;
+          },
+          message: 'Please provide valid image urls',
+        },
+      },
+    ],
   },
   { timestamps: true }
 );

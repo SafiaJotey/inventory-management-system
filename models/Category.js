@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const validator = require('validator');
 const categorySchema = mongoose.Schema(
   {
@@ -6,32 +7,16 @@ const categorySchema = mongoose.Schema(
       type: String,
       trim: true,
       required: [true, 'Please provide a category name'],
-      unique: true,
+
       lowercase: true,
     },
     description: String,
-    imageURLs: [
-      {
-        type: String,
-        required: true,
-        validate: {
-          validator: (value) => {
-            if (!Array.isArray(value)) {
-              return false;
-            }
-            let isValid = true;
-            value.forEach((url) => {
-              if (!validator.isURL(url)) {
-                isValid = false;
-              }
-            });
-            return isValid;
-          },
-          message: 'Please provide valid image urls',
-        },
-      },
-    ],
+    imageURL: {
+      type: String,
+      validate: [validator.isURL, 'provide a valid url'],
+    },
   },
+
   { timestamps: true }
 );
 const Category = mongoose.model('Category', categorySchema);

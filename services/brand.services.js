@@ -5,7 +5,7 @@ module.exports.createbrandservice = async (data) => {
   return result;
 };
 module.exports.getbrandservices = async () => {
-  const result = await Brand.find({});
+  const result = await Brand.find({}).populate('Products');
   return result;
 };
 

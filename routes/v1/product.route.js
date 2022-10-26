@@ -1,7 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const productController = require('../../controllers/product.controller');
+const uploader = require('../../midlewires/uploader');
+// const multer=require('multer')
+// const uploader = multer({
+//   dest: 'images/'})
+//   router
+//   .route('/file-upload')
+//   .post(uploader.single('image'), productController.fileUpload);
 
+router
+  .route('/file-upload')
+  .post(uploader.array('image'), productController.fileUpload);
 router
   .route('/bulk-update-with-same-data')
   .patch(productController.bulkUpdateProductWithSameValue);

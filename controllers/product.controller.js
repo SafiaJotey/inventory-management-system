@@ -196,3 +196,8 @@ exports.bulkDeleteProducts = async (req, res, next) => {
     });
   }
 };
+exports.fileUpload = async (req, res) => {
+  try {
+    res.status(200).send(req.files);
+  } catch (error) {}
+};

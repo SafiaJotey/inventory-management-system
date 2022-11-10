@@ -19,7 +19,7 @@ exports.signup = async (req, res) => {
 };
 /*
 1. check email and pass given
-2. nload user wit email
+2. load user witH email
 3.if not user send res
 4.compare pass
 5.if pass not correct send res
@@ -74,6 +74,24 @@ exports.login = async (req, res) => {
       success: false,
       message: "couldn't get user",
       error: error.message,
+    });
+  }
+};
+
+exports.getMe = async (req, res) => {
+  try {
+    const user = await userServices.finduserByEmail(req.user.email);
+    // const { password: psw, ...others } = user.toObject();
+
+    res.status(200).send({
+      success: true,
+      message: 'Successfully  get user',
+      data: user,
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      error: error.messege,
     });
   }
 };

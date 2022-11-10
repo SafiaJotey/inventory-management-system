@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const productController = require('../../controllers/product.controller');
+const { authorization } = require('../../midlewires/authorization');
 const uploader = require('../../midlewires/uploader');
+const { verifyToken } = require('../../midlewires/verifyToken');
 // const multer=require('multer')
 // const uploader = multer({
 //   dest: 'images/'})
@@ -22,11 +24,11 @@ router.route('/bulk-delete').delete(productController.bulkDeleteProducts);
 router
   .route('/')
   .get(productController.getAllProducts)
-  .post(productController.createAProduct);
+  .post(verifyToken, authorization('admin'), productController.createAProduct);
 
 router
   .route('/:id')
   .patch(productController.updateAProduct)
-  .delete(productController.deleteWithID);
+  .delete(verifyToken, authorization('admin'), productController.deleteWithID);
 
 module.exports = router;
